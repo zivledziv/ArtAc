@@ -28,7 +28,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t $DOCKERHUB_REPOSITORY_NAME .
+          docker build -t $DOCKERHUB_REPOSITORY_NAME ./app
           docker push $DOCKERHUB_REPOSITORY_NAME
 
       - name: Terraform Init
