@@ -5,7 +5,7 @@ app = Flask(__name__)
 # Route to the root URL
 @app.route('/')
 def hello():
-    return 'Hello, Flask on Docker deployed with ECS!'
+    return 'Hello, Flask-docker deployed with ECS!'
 
 # Route to a custom endpoint
 @app.route('/greet/<name>')
