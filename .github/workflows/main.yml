@@ -1,0 +1,44 @@
+name: Deploy to ECS
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  AWS_REGION: us-west-2
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  ECS_CLUSTER_NAME: my-ecs-cluster
+  ECS_SERVICE_NAME: my-ecs-service
+  DOCKERHUB_REPOSITORY_NAME: zivlederer/artac-app
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      # - name: Login to Dockerhub
+      #   run: 
+
+      - name: Build Docker image
+        run: |
+          docker build -t $DOCKERHUB_REPOSITORY_NAME .
+          docker push $DOCKERHUB_REPOSITORY_NAME
+
+      - name: Terraform Init
+        id: init
+        run: |
+          terraform fmt
+          terraform init -upgrade
+
+      - name: Terraform apply
+        run: terraform apply -auto-approve
+
+      - name: Update ECS service
+        run: aws ecs update-service --cluster $ECS_CLUSTER_NAME --service $ECS_SERVICE_NAME --force-new-deployment
