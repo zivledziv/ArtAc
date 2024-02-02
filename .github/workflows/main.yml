@@ -33,6 +33,24 @@ jobs:
           docker build -t $DOCKERHUB_REPOSITORY_NAME ./app
           docker push $DOCKERHUB_REPOSITORY_NAME
 
+      - name: Check if S3 bucket for backend already exists
+        id: check-s3
+        run: |
+          bucket_name="artac-terraform-state1"
+          if aws s3 ls "s3://$bucket_name" 2>&1 | grep -q 'NoSuchBucket'; then
+            echo "Bucket does not exist."
+            echo "::set-output name=exists::false"
+          else
+            echo "Bucket already exists."
+            echo "::set-output name=exists::true"
+          fi
+    
+      - name: Create S3 bucket if not exists
+        if: steps.check-s3.outputs.exists == 'false'
+        run: |
+          bucket_name="artac-terraform-state1"
+          aws s3api create-bucket --bucket $bucket_name --region your-aws-region --create-bucket-configuration LocationConstraint=your-aws-region
+
       - name: Terraform Init
         id: init
         run: |
