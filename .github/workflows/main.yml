@@ -49,7 +49,7 @@ jobs:
         if: steps.check-s3.outputs.exists == 'false'
         run: |
           bucket_name="artac-terraform-state1"
-          aws s3api create-bucket --bucket $bucket_name --region your-aws-region --create-bucket-configuration LocationConstraint=your-aws-region
+          aws s3api create-bucket --bucket $bucket_name --region $AWS_REGION --create-bucket-configuration LocationConstraint=$AWS_REGION
 
       - name: Terraform Init
         id: init
