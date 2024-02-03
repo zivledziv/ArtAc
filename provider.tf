@@ -1,5 +1,6 @@
 terraform {
   required_providers {
+    # try to delete docker
     docker = {
       source  = "kreuzwerker/docker"
       version = "~>2.20.0"
@@ -11,8 +12,3 @@ terraform {
   }
 }
 
-provider "docker" {}
-
-provider "aws" {
-  region = var.aws_region
-}
