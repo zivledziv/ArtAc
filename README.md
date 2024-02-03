@@ -72,7 +72,6 @@ explanation about all terraform files:
     8. Terraform apply
     9. Forces a new deployment of the ECS service in the specified cluster, using AWS CLI.
 
-
 #### challenges faced and how they were resolved:
 1. Trying to push to dockerhub without auth. Didn’t work. Adding dockerhub token as secret.
 2. Deciding wether to add s3 bucket creation for terraform backend in the actions file to make everything automated or include a prerequisite. I know its not very efficient for the long term but decided to include it for fun as optional.
