@@ -59,17 +59,18 @@ explanation about all terraform files:
 
 
 #### Github Actions:
-First head over to github secrets and add those 3 secrets: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, DOCKERHUB_TOKEN. We use them when setting environment vaiables at the start of the actions file.
-create .github/workflows/main.tf actions file. the main steps are:
-1. checkout the repository code (fetches the latest version of the repository code)
-2. prepare the environment for Terraform (configure the environment for Terraform. This includes installing the correct Terraform version and setting up necessary variables)
-3. Logs into Dockerhub using the provided credentials and token.
-4. Builds a Docker image from the 'app' directory and pushes it to the specified Dockerhub repository.
-5. (Because I wanted everything to be automatic) I included the creation/Ensuring of Terraform backend s3 bucket in aws before using Terraform. This step is totaly optionl and might not be that efficient. Normally you would prefer manually create the s3 bucket because its only one time.
-6. step 6 is creating s3 bucket only if its not found in step 5.
-7. Terraform init
-8. Terraform apply
-9. Forces a new deployment of the ECS service in the specified cluster, using AWS CLI.
+- First head over to github secrets and add those 3 secrets: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, DOCKERHUB_TOKEN. We use them when setting environment vaiables at the start of the actions file.
+
+- create .github/workflows/main.tf actions file. the main steps are:
+    1. checkout the repository code (fetches the latest version of the repository code)
+    2. prepare the environment for Terraform (configure the environment for Terraform. This includes installing the correct Terraform version and setting up necessary variables)
+    3. Logs into Dockerhub using the provided credentials and token.
+    4. Builds a Docker image from the 'app' directory and pushes it to the specified Dockerhub repository.
+    5. (Because I wanted everything to be automatic) I included the creation/Ensuring of Terraform backend s3 bucket in aws before using Terraform. This step is totaly optionl and might not be that efficient. Normally you would prefer manually create the s3 bucket because its only one time.
+    6. step 6 is creating s3 bucket only if its not found in step 5.
+    7. Terraform init
+    8. Terraform apply
+    9. Forces a new deployment of the ECS service in the specified cluster, using AWS CLI.
 
 
 #### challenges faced and how they were resolved:
